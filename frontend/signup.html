@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up to Flashcards</title>
+  <link rel="stylesheet" href="css/LoginSignUp.css">
+</head>
+
+<body>
+<section class="">
+
+  <div class="main-left">
+    <img src="assets/city.jpg" alt="" class="main-left-img">
+  </div>
+
+  <div class="main-right">
+
+    <div class="container">
+
+      <h1 class="main-right-header">Signup</h1>
+      <h1 class="main-right-underheader">Create your account</h1>
+
+      <form class="form">
+        <div>
+          <label class="email">Full Name</label>
+          <input type="text" name="" id="name" placeholder="Enter Full Name"
+                 class="email-inp"
+                 autofocus autocomplete required>
+        </div>
+
+        <div class="pass">
+          <label class="email">Email Address</label>
+          <input type="email" name="" id="email" placeholder="Enter Email Address"
+                 class="email-inp" autocomplete required>
+        </div>
+
+        <div class="pass">
+          <label class="password">Password</label>
+          <input type="password" name="" id="password" placeholder="Enter Password" minlength="6"
+                 class="password-inp" required>
+          <div class="info"></div>
+        </div>
+
+        <button type="button"
+                class="submit" id="SignUpSubmit" onclick="submitUser()">Sign Up</button>
+      </form>
+
+      <hr class="hr">
+
+      <p class="forget">
+        Already have an account?
+        <a href="login.html" class="forget-pass">
+          Log in
+        </a>
+      </p>
+
+      <p class="author">Flashcards.</p>
+    </div>
+
+  </div>
+
+</section>
+<script>
+  setTimeout(() => {
+    fetch('http://localhost:3000/sessions')
+            .then(response => response.json())
+            .then(sessions => {
+              if (sessions.length === 0) {
+                console.log('No sessions found');
+              } else {
+                window.location.href = 'index.html';
+              }
+            })
+            .catch(error => console.error('Error fetching sessions:', error));
+  }, 2000);
+  async function checkEmailExists(email) {
+    try {
+      const response = await fetch(`http://localhost:3000/users/${email}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.name){
+          return true;
+        }
+      } else {
+        console.error('Error checking email existence');
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred during email existence check:', error);
+      return false;
+    }
+  }
+  async function submitUser() {
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const emailExists = await checkEmailExists(email);
+
+    if (emailExists) {
+      alert('Email already exists. Please use a different email address.');
+      return;
+    }
+    if(name.trim() ==='' || email.trim() ===''||password.trim() ==='' ){
+      console.log("empty user");
+      return;
+    }
+    const formData = {
+      name: name,
+      email: email,
+      password: password
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Signup successful', data);
+        const pass= document.querySelector(".info");
+        pass.innerHTML='';
+        const invalid = document.createElement("div");
+        invalid.innerHTML+= ` <p style="color: #1D4ED8; font-size: 13px">User is created succesfully! </p>`
+        invalid.innerHTML+= ` <p style="color: #1D4ED8; font-size: 13px">Redirecting to login page... </p>`
+        pass.appendChild(invalid);
+        setTimeout(() => {
+          window.location.href = 'index.html';
+          }, 5000);
+
+
+      } else {
+        console.error('Error during signup');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+</script>
+</body>
+
+</html>

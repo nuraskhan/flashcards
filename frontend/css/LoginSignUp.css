@@ -1,0 +1,167 @@
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
+
+}
+.main-left{
+    display: none;
+    width: 100%;
+    height: 100vh;
+    background-color: #2563EB;
+
+
+    @media (min-width: 768px) {
+        width: 50%;
+        display: block;
+    }
+    @media (min-width: 1024px) {
+        display: block;
+    }
+    @media (min-width: 1280px) {
+        width: 66.666667%;
+    }
+
+}
+.main-left-img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+
+}
+.main-right{
+    display: flex;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+
+
+    @media (min-width: 768px) {
+        margin-left: 0;
+        margin-right: 0;
+        width: 50%;
+        max-width: 28rem;
+    }
+    @media (min-width: 1024px) {
+        padding-left: 4rem;
+        padding-right: 4rem;
+        max-width: 100%;
+    }
+    @media (min-width: 1280px) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+        width: 33.333333%;
+    }
+}
+.container{
+    width:80%;
+}
+.main-right-header{
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+}
+.main-right-underheader{
+    margin-top: 3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+
+    @media (min-width: 768px) {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+}
+.hr{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-color: #D1D5DB;
+    width: 100%;
+}
+.email{
+    display: block;
+    color: #374151;
+}
+.email-inp{
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    width:calc( 100% - 2rem); /* i am matematic */
+    background-color: #E5E7EB;
+}
+.form{
+    margin-top: 1.5rem;
+}
+.pass{
+    margin-top: 1rem;
+}
+.password{
+    display: block;
+    color: #374151;
+}
+.password-inp{
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    width:calc( 100% - 2rem);
+    background-color: #E5E7EB;
+}
+.forget-pass{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+
+}
+.forget-pass:hover {
+    color: #1D4ED8;
+}
+.forget{
+    margin-top: 0.5rem;
+    text-align: right;
+}
+.submit{
+    display: block;
+    padding: 0.75rem 1rem;
+    margin-top: 1.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: rgb(71,100,222);
+}
+.submit:hover {
+    background-color: #60A5FA;
+}
+.create{
+    font-weight: 600;
+    color: #3B82F6;
+}
+.create:hover {
+    color: #1D4ED8;
+}
+.author{
+    margin-top: 3rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #6B7280;
+}

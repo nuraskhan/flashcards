@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Flashcards</h2>
+<div id="flashcardContainer"></div>
+
+
+
+<script>
+  async function getFlashcards() {
+    try {
+      const response = await fetch('http://localhost:3000/flashcards/');
+      const flashcards = await response.json();
+      const flashcardContainer = document.getElementById('flashcardContainer');
+      flashcardContainer.innerHTML = '';
+
+      flashcards.forEach(flashcard => {
+        const cardDiv = document.createElement('div');
+        cardDiv.classList.add('flashcard');
+        cardDiv.textContent = `User: ${flashcard.user}, Front: ${flashcard.front}, Back: ${flashcard.back}, Flang: ${flashcard.flang}, Slang: ${flashcard.slang}`;
+        flashcardContainer.appendChild(cardDiv);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  getFlashcards();
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Flashcards</title>
+    <link rel="stylesheet" href="css/LoginSignUp.css">
+
+</head>
+<body>
+<section class="">
+
+    <div class="main-left">
+        <img src="assets/train.jpg" alt="" class="main-left-img">
+    </div>
+
+    <div class="main-right">
+
+        <div class="container">
+
+            <h1 class="main-right-header">Login</h1>
+            <h1 class="main-right-underheader">Log in to your account</h1>
+
+            <form class="form">
+                <div>
+                    <label class="email">Email Address</label>
+                    <input type="email" name="" id="email" placeholder="Enter Email Address" class="email-inp" autofocus autocomplete required>
+                </div>
+
+                <div class="pass">
+                    <label class="password">Password</label>
+                    <input type="password" name="" id="password" placeholder="Enter Password" minlength="6" class="password-inp" required>
+                </div>
+
+                <div class="forget">
+                    <a href="#" class="forget-pass">Forgot Password?</a>
+                </div>
+
+                <button type="button" class="submit" onclick="loginUser()">Log In</button>
+            </form>
+
+            <hr class="hr">
+
+            <p class="forget">
+                Need an account?
+                <a href="signup.html" class="create">
+                    Create an account
+                </a>
+            </p>
+
+            <p class="author">Flashcards.</p>
+        </div>
+
+    </div>
+
+</section>
+<script>
+    setTimeout(() => {
+        fetch('http://localhost:3000/sessions')
+            .then(response => response.json())
+            .then(sessions => {
+                if (sessions.length === 0) {
+                    console.log('No sessions found');
+                } else {
+                    window.location.href = 'index.html';
+                }
+            })
+            .catch(error => console.error('Error fetching sessions:', error));
+    }, 2000);
+    async function checkLoginCredentials(email, password) {
+        try {
+            const emailCheckResponse = await fetch(`http://localhost:3000/users/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (emailCheckResponse.ok) {
+                const emailCheckData = await emailCheckResponse.json();
+                console.log(emailCheckData);
+                console.log("email is exists");
+                if(emailCheckData === null){
+
+                    const pass= document.querySelector(".pass");
+                    pass.innerHTML='';
+                    const invalid = document.createElement("div");
+                    invalid.innerHTML= ` <p style="color:red ; font-size: 13px">Invalid password or email!</p>`
+                    pass.appendChild(invalid);
+                }
+                if(emailCheckData.password === password){
+                    console.log("password is checked")
+                    const a = emailCheckData.name;
+                    const formData = {
+                        name: a
+                    };
+                    try{
+                        const postUser = await fetch(`http://localhost:3000/sessions`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                    }catch(error) {
+                        console.error('An error occurred:', error);
+                    }
+                    fetch('http://localhost:3000/sessions')
+                        .then(response => response.json())
+                        .then(sessions => {
+                            if (sessions.length === 0) {
+                                console.log('No sessions found');
+                            } else {
+                                window.location.href = 'index.html';
+                            }
+                        })
+                        .catch(error => console.error('Error fetching sessions:', error));
+                }else{
+                    const pass= document.querySelector(".pass");
+                    const invalid = document.createElement("div");
+                    invalid.innerHTML= ` <p style="color:red ; font-size: 13px">Invalid password or email!</p>`
+                    pass.appendChild(invalid);
+
+                }
+            } else {
+                alert("Response isn't ok")
+                console.error('Error checking email existence');
+                return false;
+            }
+        } catch (error) {
+            console.error('An error occurred during login check:', error);
+            return false;
+        }
+    }
+
+    async function loginUser() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        if (email.trim() === '' || password.trim() === '') {
+            console.log("Empty email or password");
+            return;
+        }
+
+        const loginSuccessful = await checkLoginCredentials(email, password);
+
+    }
+</script>
+
+
+</body>
+</html>

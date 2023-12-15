@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcard Form</title>
+</head>
+<body>
+<h1>Create a Flashcard</h1>
+
+<form id="flashcardForm">
+  <label for="user">User:</label>
+  <input type="text" id="user" name="user" required>
+
+  <label for="front">Front:</label>
+  <input type="text" id="front" name="front" required>
+
+  <label for="back">Back:</label>
+  <input type="text" id="back" name="back" required>
+
+  <label for="flang">Flang:</label>
+  <input type="text" id="flang" name="flang" required>
+
+  <label for="slang">Slang:</label>
+  <input type="text" id="slang" name="slang" required>
+
+  <button type="button" onclick="submitFlashcard()">Submit Flashcard</button>
+</form>
+
+<script>
+  async function submitFlashcard() {
+    const user = document.getElementById('user').value;
+    const front = document.getElementById('front').value;
+    const back = document.getElementById('back').value;
+    const flang = document.getElementById('flang').value;
+    const slang = document.getElementById('slang').value;
+
+    const flashcardData = {
+      user: user,
+      front: front,
+      back: back,
+      flang: flang,
+      slang: slang
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/flashcards/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(flashcardData)
+      });
+
+      if (response.ok) {
+        alert('Flashcard submitted successfully!');
+        // Optionally, reset the form or perform other actions
+      } else {
+        alert('Error submitting flashcard.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
+  }
+</script>
+</body>
+</html>
